@@ -1,3 +1,5 @@
+package Lab_1;
+
 public class CreditAccount extends Account{
     private final int maxCredit;
 

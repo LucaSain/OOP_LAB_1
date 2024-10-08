@@ -1,3 +1,5 @@
+package Lab_1;
+
 public class Address {
     public Address(String city, int number, String street) {
         this.city = city;
