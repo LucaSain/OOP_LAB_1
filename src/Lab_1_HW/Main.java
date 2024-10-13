@@ -6,7 +6,7 @@ public class Main {
         Person person = new Person("Ion", "Ionescu","1234412312312");
         Loan loan = new Loan(500.0,person);
         bank.addLoan(loan);
-        bank.printInFile("test.txt");
+        bank.printInFile("testAll.txt");
         bank.removeLoan(loan);
         bank.printInFile("test2.txt");
     }
