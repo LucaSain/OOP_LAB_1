@@ -14,8 +14,6 @@ public class Account{
         this.IBAN = IBAN;
     }
 
-
-
     public boolean withdraw(int ammount) throws Exception {
         if(ammount<=0){
             throw new Exception("Invalid amount!");
