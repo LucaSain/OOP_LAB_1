@@ -1,6 +1,5 @@
 package Lab_2_HW;
 
-//Some extra stuff here.
 //Factory Method Creational Pattern
 public abstract class Dealership {
 
