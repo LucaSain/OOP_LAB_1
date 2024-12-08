@@ -3,6 +3,9 @@ package Lab_6_New;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -23,7 +26,7 @@ public class PersonForm extends JFrame {
         persons = new ArrayList<>();
 
         setTitle("Form");
-        setSize(400, 400);
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -53,6 +56,7 @@ public class PersonForm extends JFrame {
 
         addButton("Add", new AddButtonListener(), 0, 6, gbc);
         addButton("Show All", new ShowAllButtonListener(), 1, 6, gbc);
+        addButton("Save", new SaveAllButtonListener(), 2, 6, gbc);
     }
 
     private void addLabel(String text, int x, int y, GridBagConstraints gbc) {
@@ -161,7 +165,6 @@ public class PersonForm extends JFrame {
     private class ShowAllButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
             SwingUtilities.invokeLater(
                     ()->{
                       DisplayAll da = new DisplayAll();
@@ -172,37 +175,71 @@ public class PersonForm extends JFrame {
         }
     }
 
+    private class SaveAllButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            SwingUtilities.invokeLater(
+                    ()->{
+                        try(
+                                FileWriter fw = new FileWriter("all.txt");
+                                BufferedWriter writer = new BufferedWriter(fw);) {
 
-    public class DisplayAll extends JFrame{
-        DisplayAll(){
+                            for(Person p : persons){
+                                writer.append(String.valueOf(p));
+                                writer.newLine();
+                            }
+                            JOptionPane.showMessageDialog(null, "Written successfully to all.txt");
+                        }
+                        catch (Exception exception){
+                            System.out.println(exception.toString());
+                        }
+                    }
+            );
 
-            setTitle("Forma");
+        }
+    }
+
+
+    public class DisplayAll extends JFrame {
+        DisplayAll() {
+            setTitle("All Persons");
             setSize(400, 400);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Use DISPOSE_ON_CLOSE to allow closing without exiting
             setLayout(new GridBagLayout());
 
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.insets = new Insets(5, 5, 5, 5);
             gbc.fill = GridBagConstraints.HORIZONTAL;
 
-            InitUIComponents(gbc);
+            initUIComponents(gbc);
         }
 
-        void InitUIComponents(GridBagConstraints gbc){
-            JTextArea textComponent = new JTextArea(5, 20);
+        void initUIComponents(GridBagConstraints gbc) {
+            // Create a text area to display person details
+            JTextArea textComponent = new JTextArea(10, 30); // Adjusted dimensions
             textComponent.setLineWrap(true);
             textComponent.setWrapStyleWord(true);
+            textComponent.setEditable(false); // Make it read-only
 
-            JScrollPane scrollPane = new JScrollPane(jobDescriptionArea);
+            // Populate text from 'persons'
+            StringBuilder text = new StringBuilder();
+            for (Person p : persons) {
+                text.append(p).append("\n"); // Add a newline for better readability
+            }
+            textComponent.setText(text.toString());
+
+            // Add the text area to a scroll pane
+            JScrollPane scrollPane = new JScrollPane(textComponent);
             scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
             scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-           StringBuilder text = new StringBuilder();
-           for(Person p:persons){
-                text.append(p);
-           }
-           textComponent.setText(String.valueOf(text));
+
+            // Add the scroll pane to the frame
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            add(scrollPane, gbc);
         }
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

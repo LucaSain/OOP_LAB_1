@@ -1,9 +1,6 @@
 package Lab_3_HW;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Deck extends ArrayList<PlayingCard>{
     public final int MAX_SIZE=52;
@@ -76,6 +73,21 @@ public class Deck extends ArrayList<PlayingCard>{
             return;
         }
         super.addLast(element);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Deck that = (Deck) o;
+        return MAX_SIZE == that.MAX_SIZE;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), MAX_SIZE);
     }
 }
 

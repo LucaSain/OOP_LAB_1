@@ -44,7 +44,15 @@ class UserbaseTest {
 
     @Test
     void addUser(){
-        assertThrowsExactly(IndexOutOfBoundsException.class, userbaseaddUser(users.getFirst()) )
+        assertThrowsExactly(IndexOutOfBoundsException.class, () -> userbase.addUser(users.getFirst()) );
+    }
+
+    @Test
+    void addChallenge(){
+
+        assertThrowsExactly(IndexOutOfBoundsException.class, () -> users.getFirst().addChallenge(
+             new Challenge("Unbreakable","This is not a fun challenge","Python", 10)
+        ));
     }
 
     @Test
